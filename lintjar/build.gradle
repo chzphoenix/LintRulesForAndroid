@@ -15,12 +15,13 @@ jar {
     }
 }
 
+//定义lintJarOutput方法，在lintaar中被调用
 configurations {
     lintJarOutput
 }
 
 dependencies {
-    //打jar包
+    //lintJarOutput方法，打jar包
     lintJarOutput files(jar)
 }
 

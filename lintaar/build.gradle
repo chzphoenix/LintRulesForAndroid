@@ -27,17 +27,17 @@ dependencies {
 
 }
 
-// 定义方法lintJarImport
+// 定义lintJarImport方法，在copyLintJar任务中被调用
 configurations {
     lintJarImport
 }
 
-// 链接到lintJar中的lintJarOutput方法,调用jar方法，并获得jar包
 dependencies {
+    // 调用lintjar的lintJarOutput方法，获得jar包
     lintJarImport project(path: ':lintjar', configuration: 'lintJarOutput')
 }
 
-// 将得到的JAR包复制到目录build/intermediates/lint/下
+// 调用lintJarImport得到jar包，拷贝到指定目录
 task copyLintJar(type: Copy) {
     from (configurations.lintJarImport) {
         rename {
@@ -47,7 +47,8 @@ task copyLintJar(type: Copy) {
     }
     into 'build/intermediates/lint/'
 }
-// 当项目build到compileLint这一步时执行copyLintJar方法
+
+// 当项目执行到prepareLintJar这一步时执行copyLintJar方法（注意：这个时机需要根据项目具体情况改变）
 project.afterEvaluate {
     def compileLintTask = project.tasks.find{ it.name == 'prepareLintJar'}
     compileLintTask.dependsOn(copyLintJar)
